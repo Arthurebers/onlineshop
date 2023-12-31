@@ -1,0 +1,10 @@
+# PHP Fehler nicht in der HTTP-Antwort ausgeben
+#php_value display_errors 0
+
+# PHP Fehler im Windows Ereignisprotokoll ausgegen
+#php_value error_log syslog
+
+AuthType Basic
+AuthName "OnlineShop-Liste"
+AuthUserFile "C:\xampp\htdocs\webdev\.htusers"
+Require valid-user

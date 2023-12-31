@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+      <title>Online-Shop</title>
+      
+      <!-- Von Vue.js und Vuetify implementierte Stylesheets-->
+      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+      
+      <!-- Eigene Styles-->
+      <link href="../css/styles.classes.css" rel="stylesheet">
+
+      <!-- Font Awesome -->
+      <script src="https://kit.fontawesome.com/f633786305.js" crossorigin="anonymous"></script>
+   </head>
+
+   <body>
+      <div id="app">
+         <v-app>
+            <!-- Toolbar - hier befinden sich der Name und der Zurück-Button der Detail-Ansicht -->
+            <v-app-bar app elevate-on-scroll fixed>
+               <v-toolbar-title>Online-Shop</v-toolbar-title>
+            </v-app-bar>
+            
+            <v-main>
+               <!-- Tabelle - hier stehen die Daten drinnen -->
+               <v-data-table :headers="headersItemList" :items="items" hide-default-footer no-data-text="Keine Artikel vorhanden" disable-pagination>
+                  <!-- Header für Preis -->
+                  <template v-slot:header.price="{ header }">
+                     <span style="display:block; width:100%;" class="alignRight">{{header.text}}</span>
+                  </template>
+                  <!-- Body für Preis -->
+                  <template v-slot:item.price="{ item }">
+                     <span style="display:block; width:100%;" class="currency">{{item.price}}</span>
+                  </template>
+
+                  <!-- Header für Actions -->
+                  <template v-slot:header.actions="{ header }">
+                     <span style="display:block; width:100%;" class="alignCenter">{{header.text}}</span>
+                  </template>
+                  <!-- Body für Actions -->
+                  <template v-slot:item.actions="{ item }">
+                     <div class="alignCenter">
+                        <span style="padding:5px;" @click="onClickAddToShoppingCart(item)"><i class="fa-solid fa-circle-plus"></i></span>
+                        <span style="padding:5px;" @click="onClickItemView(item)"><i class="fa-regular fa-eye"></i></span>
+                        <span style="padding:5px;" @click="onClickItemDelete(item)"><i class="fa-solid fa-trash-can"></i></i></span>
+                     </div>
+                  </template>
+               </v-data-table>
+            </v-main>
+           
+            <!-- Warenkorb als Navigationsleiste - zeigt die Anzahl und die Summe der Einkäufe an -->
+            <v-bottom-navigation fixed>
+               <v-spacer></v-spacer>
+               <div style="padding: 5px 0;" @click="dialogCart=true">
+                  <div style="text-align:center;"><i class="fa-solid fa-cart-shopping fa-xl"></i></div>
+                  <div>Artikel im Einkaufswagen: {{itemsInCartCount}}</div>
+               </div>
+               <v-spacer></v-spacer>
+            </v-bottom-navigation>
+
+            <!-- Dialog für Details -  hier sind die Details eines Items zu sehen -->
+            <v-dialog v-model="dialogDetails" width="100%" v-if="itemSelected != null" >
+               <v-card>
+                  <v-card-title>
+                     <div style="width:100%;">
+                        <span>Artikeldetails</span>
+                        <span style="padding:5px; float:right;" @click="itemSelected=null; dialogDetails=false"><i class="fa-solid fa-circle-xmark"></i></span>
+                     </div>
+                  </v-card-title>
+                  <v-card-text>
+                     <v-row>
+                        <v-text-field readonly v-model="itemSelected.name" label="Name"></v-text-field>
+                        <v-text-field readonly v-model="itemSelected.categoryName" label="Kategorie"></v-text-field>
+                        <v-text-field readonly v-model="itemSelected.price" prefix="€" label="Preis/Stück" style="text-align:right;"></v-text-field></span>
+                     </v-row>
+                     <v-row>
+                        <v-text-field readonly v-model="itemSelected.descriptionShort" type="descriptionShort" label="Kurzbeschreibung"></v-text-field>
+                      </v-row>
+                     <v-row>
+                        <v-text-field readonly v-model="itemSelected.descriptionLong" type="descriptionLong" label="Langbeschreibung"></v-text-field>
+                     </v-row>
+                  </v-card-text>
+                  
+                  <v-card-actions>
+                     <v-row>
+                        <v-col class="text-center">
+                           <v-btn style="padding:5px;" @click.stop="dialogDetails=false">Schließen</v-btn>
+                        </v-col>
+                     </v-row>
+                  </v-card-actions>
+               </v-card>
+            </v-dialog>
+
+            <!-- Dialog Löschen bestätigen-->
+            <v-dialog v-model="dialogConfirmDelete" max-width="290">
+               <v-card>
+                  <v-card-title>
+                     <div style="width:100%;">
+                        <span>Artikel löschen</span>
+                        <span style="padding:5px; float:right;" @click="itemSelected=null; dialogConfirmDelete=false"><i class="fa-solid fa-circle-xmark"></i></span>
+                     </div>
+                  </v-card-title>
+                  <v-card-text>Soll der Artikel wirklich gelöscht werden?</v-card-text>
+                  <v-card-actions>
+                      <v-btn @click="onClickItemDeleteApprove();">Bestätigen</v-btn>
+                      <v-btn @click="dialogConfirmDelete=false; this.itemSelected=null;">Abbrechen</v-btn>
+                  </v-card-actions>
+               </v-card>
+            </v-dialog>
+
+            <!-- Dialog Warenkorb -->
+            <v-dialog v-model="dialogCart" width="100%">
+               <v-card>
+                  <v-card-title>
+                     <div style="width:100%;">
+                        <span>Warenkorb</span>
+                        <span style="padding:5px; float:right;" @click="itemSelected=null; dialogDetails=false"><i class="fa-solid fa-circle-xmark"></i></span>
+                     </div>
+                  </v-card-title>
+                  
+                  <v-card-text>
+                     <v-data-table :headers="headersItemListInCart" :items="itemsInCart" hide-default-footer no-data-text="Keine Artikel vorhanden" disable-pagination>
+                        <!-- Header für Menge -->
+                        <template v-slot:header.amount="{ header }">
+                           <span style="display:block; width:100%;" class="alignRight">{{header.text}}</span>
+                        </template>
+                        <!-- Header für Preis/Stk -->
+                        <template v-slot:header.price="{ header }">
+                           <span style="display:block; width:100%;" class="alignRight">{{header.text}}</span>
+                        </template>
+                        <!-- Header für Summe -->
+                        <template v-slot:header.sum="{ header }">
+                           <span style="display:block; width:100%;" class="alignRight">{{header.text}}</span>
+                        </template>
+                        
+                        <!-- Body für Menge -->
+                        <template v-slot:item.amount="{ item }">
+                           <span style="display:block; width:100%;" class="alignRight">{{item.amount}}</span>
+                        </template>
+                        <!-- Body für Preis/Stk -->
+                        <template v-slot:item.price="{ item }">
+                           <span style="display:block; width:100%;" class="currency">{{item.item.price}}</span>
+                        </template>
+                        <!-- Body für Summe -->
+                        <template v-slot:item.sum="{ item }">
+                           <span style="display:block; width:100%;" class="currency">{{item.priceSum}}</span>
+                        </template>
+                     </v-data-table>
+                  </v-card-text>
+                  
+                  <v-card-actions>
+                     <v-row>
+                        <v-col class="text-center">
+                           <v-btn style="padding:5px;" @click.stop="dialogCart=false">Schließen</v-btn>
+                        </v-col>
+                     </v-row>
+                  </v-card-actions>
+               </v-card>
+            </v-dialog>
+
+            <!-- Dialog Fehler -->
+            <v-dialog v-model="errorOccured" persistent max-width="290">
+               <v-card>
+                  <v-card-title>Fehlermeldung</v-card-title>
+                  <v-card-text>{{errorMessage}}</v-card-text>
+                  <v-card-actions>
+                     <v-spacer></v-spacer>
+                     <v-btn @click="errorOccured = false">Ok</v-btn>
+                     <v-spacer></v-spacer>
+                  </v-card-actions>
+               </v-card>
+            </v-dialog>
+         </v-app>
+      </div>
+
+      <!-- Skripts von Vue.js, Vuetify, Axios und das eigene Seitenskript -->
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+      <script src="javascript/application.js"></script>
+   </body>
+</html>

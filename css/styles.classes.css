@@ -1,0 +1,80 @@
+/*------------------------------------------------------------------*\
+   styles.classes.css
+
+   brief: Verwaltung der Klassen Styles
+\*------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------*\
+|   .tableHoverRows
+\*------------------------------------------------------------------*/
+.hoverable:hover, .hoverable:hover *
+{
+   color             : #417dff;
+   background-color  : #070707;
+
+   cursor            : pointer;
+
+   /*Animation*/
+   transition        : all 300ms ; 
+   -webkit-transition: all 300ms ;
+   -moz-transition   : all 300ms ;
+   -o-transition     : all 300ms ;
+}
+
+/*------------------------------------------------------------------*\
+|   .itemTemplate
+\*------------------------------------------------------------------*/
+.itemTemplate     {display:none;}
+
+/*------------------------------------------------------------------*\
+|   .currency
+\*------------------------------------------------------------------*/
+.currency         {text-align:right;}
+.currency:after   {content   :'€';}
+
+/*------------------------------------------------------------------*\
+|   .align...
+\*------------------------------------------------------------------*/
+.alignLeft        {text-align : left;}
+.alignCenter      {text-align : center;}
+.alignRight       {text-align : right;}
+
+/*------------------------------------------------------------------*\
+|   .hideEmpty
+\*------------------------------------------------------------------*/
+.hideEmpty:empty  {display:none;}
+
+/*------------------------------------------------------------------*\
+|   jQuery überschreiben
+\*------------------------------------------------------------------*/
+.ui-widget input, .ui-widget select, .ui-widget textarea
+{
+   font-family       : "Montserrat", sans-serif;
+   font-weight       : 500;
+   font-size         : 16px;
+   text-decoration   : none;
+   background-color  : #535353;
+   border            : 1px solid #417dff;
+}
+
+.ui-widget input:focus, .ui-widget select:focus
+{
+   text-decoration   : none;
+   background-color  : #535353;
+   border            : 2px solid #417dff;
+}
+
+.ui-dialog-buttonset, .ui-dialog-title
+{
+   background-color: rgba(0,0,0,0);
+}
+
+.ui-widget-content
+{
+   border: none;
+}
+
+.ui-widget-content .ui-state-error-text
+{
+   color: #ff2020;
+}

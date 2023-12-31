@@ -1,0 +1,124 @@
+/*------------------------------------------------------------------*\
+   styles.id.css
+
+   brief: Verwaltung der ID Styles
+\*------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------*\
+|   #hideAll
+\*------------------------------------------------------------------*/
+#hideAll
+{
+   display           : block;
+   position          : fixed;
+   left              : 0px; 
+   right             : 0px; 
+   top               : 0px; 
+   bottom            : 0px; 
+   z-index           : 99; 
+}
+
+#hideAll span
+{
+   position          : fixed;
+   top               : 50%;
+   left              : 50%;
+   transform         : translate(-50%, -50%);
+   
+   font-size         : 100px;
+
+   color             : #b4b4b4;
+   background-color  : #1b1b1b;
+}
+
+/*------------------------------------------------------------------*\
+|   .navbar
+\*------------------------------------------------------------------*/
+#navbar
+{
+   list-style        : none;
+   padding           : 0 5%;
+}
+
+#navbar a
+{
+   display           : inline-block;
+   padding           : 50px 20px;
+}
+
+#navbar a:hover, #navbar a:hover li, #navbar a:hover li i
+{
+   color             : #417dff;
+   background-color  : #070707;
+}
+
+/*------------------------------------------------------------------*\
+|   #labelItemCount
+\*------------------------------------------------------------------*/
+#labelItemCount
+{
+   padding           : 0 2px;
+   margin-left       : -10px;
+   border-radius     : 20px;
+
+   vertical-align    : baseline;
+   font-size         : 16px;
+
+   color             : #ffffff;
+   background-color  : #707070;
+}
+
+/*------------------------------------------------------------------*\
+|   #itemList
+\*------------------------------------------------------------------*/
+#itemList                           {padding: 0 50% 0 5%;}
+#itemList table                     {width: 100%; text-align: left; border-collapse: collapse;}
+#itemList th                        {font-size: 20px; padding: 5px 15px 5px 0px;}
+#itemList td                        {font-size: 18px; padding: 5px 15px 5px 0px; white-space: nowrap;}
+#itemList tr:hover:nth-child(2n) td {background-color: #070707;}
+#itemList tr:hover:nth-child(2n) i  {background-color: #070707;}
+
+/*------------------------------------------------------------------*\
+|   #selectorsItemList
+\*------------------------------------------------------------------*/
+#selectorsItemList                  {padding: 10px 0;}
+
+/*------------------------------------------------------------------*\
+|   #containerSelectorPage
+\*------------------------------------------------------------------*/
+#containerSelectorPage              {float: right;}
+
+/*------------------------------------------------------------------*\
+|   #dialogDetails
+\*------------------------------------------------------------------*/
+#dialogDetails                      {width: 100%; height: 100%;}
+#dialogDetails table                {width: 100%; border-collapse: collapse;}
+#dialogDetails th                   {padding: 5px; width: auto;}
+#dialogDetails td                   {padding: 5px;}
+#dialogDetails #summary             {margin-top: 20px; margin-bottom: 20px;}
+
+/*------------------------------------------------------------------*\
+|   #dialogEdit
+\*------------------------------------------------------------------*/
+#dialogEdit                         {width: 95%; height: 100%;}
+#dialogEdit table                   {width: 100%; border-collapse: collapse;}
+#dialogEdit th                      {padding: 5px; width: auto;}
+#dialogEdit tr                      {background-color: #202020;}
+#dialogEdit tr:nth-child(2n) td     {background-color: #202020;}
+#dialogEdit input                   {width: 100%;}
+#dialogEdit select                  {width: 100%;}
+#dialogEdit #summary                {margin-top: 20px;}
+#dialogEdit #details                {margin-top: 20px; margin-bottom:20px;}
+#dialogEdit #details td             {vertical-align:top;}
+#dialogEdit #details textarea       {width: 100%; resize:none; }
+
+/*------------------------------------------------------------------*\
+|   #dialogCart
+\*------------------------------------------------------------------*/
+#dialogCart                         {width: 95%; height: 100%;}
+#dialogCart table                   {width: 100%; margin-top: 20px; border-collapse: collapse;}
+#dialogCart th                      {padding: 5px 20px 5px 0px; font-size: 20px;}
+#dialogCart tr                      {background-color: #202020;}
+#dialogCart td                      {font-size:18px;}
+#dialogCart #priceSumTotal          {float:right;}
+#dialogCart #containterPriceSumTotal{margin-top: 5px; font-size: 20px;}
